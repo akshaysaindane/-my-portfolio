@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign in</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep:#0B0D17;
+    --violet:#6C5CE7;
+    --teal:#00D9C0;
+    --text-main:#FFFFFF;
+    --text-muted:#A8A8B3;
+    --glass:rgba(255,255,255,0.06);
+    --glass-border:rgba(255,255,255,0.12);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    font-family:'Inter',sans-serif;
+    background:var(--bg-deep);
+    color:var(--text-main);
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    position:relative;
+  }
+
+  /* animated aurora blobs */
+  .blob{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(80px);
+    opacity:0.55;
+    will-change:transform;
+  }
+  .blob1{
+    width:480px;height:480px;
+    background:radial-gradient(circle at 30% 30%, var(--violet), transparent 70%);
+    top:-120px; left:-120px;
+    animation:float1 16s ease-in-out infinite;
+  }
+  .blob2{
+    width:520px;height:520px;
+    background:radial-gradient(circle at 70% 70%, var(--teal), transparent 70%);
+    bottom:-160px; right:-160px;
+    animation:float2 20s ease-in-out infinite;
+  }
+  .blob3{
+    width:360px;height:360px;
+    background:radial-gradient(circle at 50% 50%, #FF6FB5, transparent 70%);
+    top:40%; left:60%;
+    opacity:0.35;
+    animation:float3 24s ease-in-out infinite;
+  }
+  @keyframes float1{
+    0%,100%{transform:translate(0,0) scale(1);}
+    50%{transform:translate(80px,60px) scale(1.15);}
+  }
+  @keyframes float2{
+    0%,100%{transform:translate(0,0) scale(1);}
+    50%{transform:translate(-70px,-50px) scale(1.1);}
+  }
+  @keyframes float3{
+    0%,100%{transform:translate(0,0) scale(1);}
+    50%{transform:translate(-60px,40px) scale(1.2);}
+  }
+
+  /* drifting particles */
+  .particles{
+    position:absolute; inset:0;
+    pointer-events:none;
+  }
+  .particle{
+    position:absolute;
+    width:4px;height:4px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.5);
+    animation:drift linear infinite;
+  }
+  @keyframes drift{
+    0%{transform:translateY(0) translateX(0); opacity:0;}
+    10%{opacity:0.8;}
+    90%{opacity:0.6;}
+    100%{transform:translateY(-110vh) translateX(20px); opacity:0;}
+  }
+
+  /* glass card */
+  .card{
+    position:relative;
+    z-index:10;
+    width:380px;
+    padding:42px 36px 36px;
+    background:var(--glass);
+    border:1px solid var(--glass-border);
+    border-radius:20px;
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    box-shadow:0 20px 60px rgba(0,0,0,0.45);
+    animation:cardIn 0.8s cubic-bezier(.22,1,.36,1) both;
+  }
+  @keyframes cardIn{
+    from{opacity:0; transform:translateY(28px) scale(0.96);}
+    to{opacity:1; transform:translateY(0) scale(1);}
+  }
+
+  .logo{
+    width:48px;height:48px;
+    border-radius:14px;
+    margin:0 auto 20px;
+    background:linear-gradient(135deg, var(--violet), var(--teal));
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:20px;
+    box-shadow:0 8px 24px rgba(108,92,231,0.45);
+    animation:logoPulse 3.5s ease-in-out infinite;
+  }
+  @keyframes logoPulse{
+    0%,100%{box-shadow:0 8px 24px rgba(108,92,231,0.45);}
+    50%{box-shadow:0 8px 36px rgba(0,217,192,0.55);}
+  }
+
+  h1{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:24px;
+    text-align:center;
+    margin-bottom:6px;
+    letter-spacing:-0.02em;
+  }
+  .sub{
+    text-align:center;
+    color:var(--text-muted);
+    font-size:13.5px;
+    margin-bottom:28px;
+  }
+
+  .field{
+    position:relative;
+    margin-bottom:18px;
+  }
+  .field input{
+    width:100%;
+    padding:14px 14px 14px 44px;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:12px;
+    color:var(--text-main);
+    font-size:14px;
+    font-family:'Inter',sans-serif;
+    outline:none;
+    transition:border-color .25s, box-shadow .25s, background .25s;
+  }
+  .field input::placeholder{color:var(--text-muted);}
+  .field input:focus{
+    border-color:var(--violet);
+    background:rgba(255,255,255,0.08);
+    box-shadow:0 0 0 4px rgba(108,92,231,0.18);
+  }
+  .field .icon{
+    position:absolute;
+    left:14px; top:50%;
+    transform:translateY(-50%);
+    width:18px;height:18px;
+    color:var(--text-muted);
+    transition:color .25s;
+  }
+  .field input:focus ~ .icon{color:var(--teal);}
+
+  .row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:24px;
+    font-size:12.5px;
+    color:var(--text-muted);
+  }
+  .row label{display:flex; align-items:center; gap:6px; cursor:pointer;}
+  .row a{color:var(--teal); text-decoration:none;}
+  .row a:hover{text-decoration:underline;}
+
+  .btn{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(135deg, var(--violet), var(--teal));
+    color:#fff;
+    font-weight:600;
+    font-size:14.5px;
+    font-family:'Inter',sans-serif;
+    cursor:pointer;
+    position:relative;
+    overflow:hidden;
+    transition:transform .15s, box-shadow .25s;
+    box-shadow:0 10px 30px rgba(108,92,231,0.35);
+  }
+  .btn:hover{transform:translateY(-2px); box-shadow:0 14px 36px rgba(0,217,192,0.4);}
+  .btn:active{transform:translateY(0) scale(0.98);}
+  .btn .shine{
+    position:absolute; top:0; left:-60%;
+    width:50%; height:100%;
+    background:linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent);
+    transform:skewX(-20deg);
+    animation:shine 3s ease-in-out infinite;
+  }
+  @keyframes shine{
+    0%{left:-60%;}
+    50%{left:130%;}
+    100%{left:130%;}
+  }
+
+  .divider{
+    display:flex; align-items:center;
+    gap:10px;
+    margin:24px 0 18px;
+    color:var(--text-muted);
+    font-size:12px;
+  }
+  .divider::before,.divider::after{
+    content:'';
+    flex:1;
+    height:1px;
+    background:rgba(255,255,255,0.12);
+  }
+
+  .social{
+    display:flex; gap:12px;
+    margin-bottom:24px;
+  }
+  .social button{
+    flex:1;
+    padding:11px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,0.12);
+    background:rgba(255,255,255,0.04);
+    color:var(--text-main);
+    font-size:13px;
+    display:flex; align-items:center; justify-content:center; gap:6px;
+    cursor:pointer;
+    transition:background .2s, transform .2s, border-color .2s;
+  }
+  .social button:hover{
+    background:rgba(255,255,255,0.09);
+    border-color:rgba(255,255,255,0.25);
+    transform:translateY(-2px);
+  }
+
+  .footer{
+    text-align:center;
+    font-size:13px;
+    color:var(--text-muted);
+  }
+  .footer a{color:var(--violet); text-decoration:none; font-weight:600;}
+  .footer a:hover{text-decoration:underline;}
+
+  input[type="checkbox"]{
+    appearance:none;
+    width:14px;height:14px;
+    border-radius:4px;
+    border:1px solid rgba(255,255,255,0.3);
+    cursor:pointer;
+    position:relative;
+    transition:background .2s, border-color .2s;
+  }
+  input[type="checkbox"]:checked{
+    background:var(--violet);
+    border-color:var(--violet);
+  }
+  input[type="checkbox"]:checked::after{
+    content:'';
+    position:absolute; left:4px; top:1px;
+    width:4px;height:8px;
+    border:solid white;
+    border-width:0 2px 2px 0;
+    transform:rotate(45deg);
+  }
+
+  @media (max-width:420px){
+    .card{width:90vw; padding:32px 24px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
+<div class="blob blob3"></div>
+<div class="particles" id="particles"></div>
+
+<form class="card" id="loginForm">
+  <div class="logo">A</div>
+  <h1>Welcome back</h1>
+  <p class="sub">Sign in to continue to your account</p>
+
+  <div class="field">
+    <input type="email" placeholder="Email address" required>
+    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M4 4h16v16H4z" stroke-linecap="round" stroke-linejoin="round" opacity="0"/>
+      <path d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6zm-2 0l-8 5-8-5h16zm0 12H4V8l8 5 8-5v10z"/>
+    </svg>
+  </div>
+
+  <div class="field">
+    <input type="password" placeholder="Password" required>
+    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <rect x="5" y="11" width="14" height="9" rx="2"/>
+      <path d="M8 11V7a4 4 0 1 1 8 0v4"/>
+    </svg>
+  </div>
+
+  <div class="row">
+    <label><input type="checkbox"> Remember me</label>
+    <a href="#">Forgot password?</a>
+  </div>
+
+  <button type="submit" class="btn">
+    <span class="shine"></span>
+    Sign in
+  </button>
+
+  <div class="divider">or continue with</div>
+
+  <div class="social">
+    <button type="button">Google</button>
+    <button type="button">GitHub</button>
+  </div>
+
+  <p class="footer">New here? <a href="#">Create an account</a></p>
+</form>
+
+<script>
+  // generate floating particles
+  const container = document.getElementById('particles');
+  const count = 26;
+  for(let i=0;i<count;i++){
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = 2 + Math.random()*3;
+    p.style.width = size+'px';
+    p.style.height = size+'px';
+    p.style.left = Math.random()*100+'vw';
+    p.style.bottom = '-10px';
+    p.style.animationDuration = (8 + Math.random()*14)+'s';
+    p.style.animationDelay = (Math.random()*10)+'s';
+    container.appendChild(p);
+  }
+
+  // simple submit feedback animation
+  document.getElementById('loginForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const btn = this.querySelector('.btn');
+    btn.textContent = 'Signing in...';
+    btn.style.opacity = '0.85';
+    setTimeout(()=>{
+      btn.textContent = 'Welcome!';
+setTimeout(()=>{ window.location.href = 'dashboard.html'; }, 800);
+    }, 1200);
+  });
+</script>
+
+</body>
+</html>

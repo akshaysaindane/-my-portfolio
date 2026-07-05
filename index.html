@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep:#0B0D17;
+    --violet:#6C5CE7;
+    --teal:#00D9C0;
+    --text-main:#FFFFFF;
+    --text-muted:#A8A8B3;
+    --glass:rgba(255,255,255,0.06);
+    --glass-border:rgba(255,255,255,0.12);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Inter',sans-serif;
+    background:var(--bg-deep);
+    color:var(--text-main);
+    overflow-x:hidden;
+  }
+  a{text-decoration:none; color:inherit;}
+
+  .blob{position:fixed; border-radius:50%; filter:blur(90px); opacity:0.45; z-index:0;}
+  .blob1{width:500px;height:500px; background:radial-gradient(circle, var(--violet), transparent 70%); top:-150px; left:-150px; animation:float1 18s ease-in-out infinite;}
+  .blob2{width:520px;height:520px; background:radial-gradient(circle, var(--teal), transparent 70%); top:40%; right:-200px; animation:float2 22s ease-in-out infinite;}
+  @keyframes float1{0%,100%{transform:translate(0,0);}50%{transform:translate(70px,50px);}}
+  @keyframes float2{0%,100%{transform:translate(0,0);}50%{transform:translate(-60px,40px);}}
+
+  nav{
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:20px 48px;
+    background:rgba(11,13,23,0.7);
+    backdrop-filter:blur(16px);
+    border-bottom:1px solid var(--glass-border);
+  }
+  .logo{font-family:'Space Grotesk'; font-weight:700; font-size:18px;}
+  .logo span{color:var(--teal);}
+  .nav-links{display:flex; gap:32px; font-size:14px; color:var(--text-muted);}
+  .nav-links a:hover{color:var(--text-main);}
+  .nav-cta{
+    padding:10px 20px; border-radius:10px;
+    background:linear-gradient(135deg,var(--violet),var(--teal));
+    font-size:13.5px; font-weight:600;
+    transition:transform .2s;
+  }
+  .nav-cta:hover{transform:translateY(-2px);}
+
+  .hero{
+    position:relative; z-index:1;
+    min-height:88vh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center;
+    padding:0 24px;
+  }
+  .eyebrow{
+    color:var(--teal); font-size:13px; letter-spacing:0.08em;
+    text-transform:uppercase; margin-bottom:18px;
+    opacity:0; animation:fadeUp .8s ease forwards; animation-delay:.1s;
+  }
+  h1{
+    font-family:'Space Grotesk'; font-weight:700;
+    font-size:56px; line-height:1.1; letter-spacing:-0.02em;
+    max-width:780px; margin-bottom:20px;
+    opacity:0; animation:fadeUp .8s ease forwards; animation-delay:.25s;
+  }
+  h1 .grad{
+    background:linear-gradient(135deg,var(--violet),var(--teal));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .hero p{
+    color:var(--text-muted); font-size:16px; max-width:520px; margin-bottom:32px;
+    opacity:0; animation:fadeUp .8s ease forwards; animation-delay:.4s;
+  }
+  .hero-ctas{display:flex; gap:14px; opacity:0; animation:fadeUp .8s ease forwards; animation-delay:.55s;}
+  @keyframes fadeUp{from{opacity:0; transform:translateY(18px);} to{opacity:1; transform:translateY(0);}}
+
+  .btn-primary{
+    padding:14px 26px; border-radius:12px;
+    background:linear-gradient(135deg,var(--violet),var(--teal));
+    font-weight:600; font-size:14.5px;
+    box-shadow:0 10px 30px rgba(108,92,231,0.35);
+    transition:transform .2s, box-shadow .2s;
+  }
+  .btn-primary:hover{transform:translateY(-2px); box-shadow:0 14px 36px rgba(0,217,192,0.4);}
+  .btn-ghost{
+    padding:14px 26px; border-radius:12px;
+    border:1px solid var(--glass-border);
+    font-weight:600; font-size:14.5px;
+    transition:background .2s, transform .2s;
+  }
+  .btn-ghost:hover{background:rgba(255,255,255,0.06); transform:translateY(-2px);}
+
+  section{position:relative; z-index:1; padding:100px 48px;}
+  .section-head{text-align:center; margin-bottom:48px;}
+  .section-head .eyebrow{margin-bottom:10px;}
+  .section-head h2{font-family:'Space Grotesk'; font-weight:700; font-size:32px;}
+
+  .projects{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:24px;
+    max-width:1100px; margin:0 auto;
+  }
+  .project-card{
+    background:var(--glass); border:1px solid var(--glass-border);
+    border-radius:16px; padding:28px;
+    transition:transform .3s, border-color .3s;
+  }
+  .project-card:hover{transform:translateY(-6px); border-color:rgba(255,255,255,0.25);}
+  .project-thumb{
+    height:140px; border-radius:12px; margin-bottom:18px;
+    background:linear-gradient(135deg, rgba(108,92,231,0.4), rgba(0,217,192,0.3));
+  }
+  .project-card h3{font-family:'Space Grotesk'; font-size:17px; margin-bottom:8px;}
+  .project-card p{color:var(--text-muted); font-size:13.5px; line-height:1.6;}
+  .tags{display:flex; gap:8px; margin-top:14px;}
+  .tag{font-size:11px; padding:4px 10px; border-radius:20px; background:rgba(255,255,255,0.08); color:var(--text-muted);}
+
+  .about{max-width:760px; margin:0 auto; text-align:center;}
+  .about p{color:var(--text-muted); font-size:15.5px; line-height:1.8;}
+  .stats{display:flex; justify-content:center; gap:48px; margin-top:40px;}
+  .stat h3{font-family:'Space Grotesk'; font-size:30px; background:linear-gradient(135deg,var(--violet),var(--teal)); -webkit-background-clip:text; background-clip:text; color:transparent;}
+  .stat p{color:var(--text-muted); font-size:13px; margin-top:4px;}
+
+  .client-cta{
+    max-width:760px; margin:0 auto; text-align:center;
+    background:var(--glass); border:1px solid var(--glass-border);
+    border-radius:20px; padding:48px;
+  }
+  .client-cta h2{font-family:'Space Grotesk'; font-size:26px; margin-bottom:12px;}
+  .client-cta p{color:var(--text-muted); margin-bottom:24px;}
+
+  footer{
+    position:relative; z-index:1;
+    padding:32px 48px; text-align:center;
+    color:var(--text-muted); font-size:13px;
+    border-top:1px solid var(--glass-border);
+  }
+
+  @media (max-width:880px){
+    .nav-links{display:none;}
+    .projects{grid-template-columns:1fr;}
+    h1{font-size:38px;}
+    .stats{flex-wrap:wrap; gap:28px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
+
+<nav>
+  <div class="logo">design<span>folio</span></div>
+  <div class="nav-links">
+    <a href="#work">Work</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+    <a href="market-tracker.html">Market Tracker</a>
+  </div>
+  <a href="login.html" class="nav-cta">Client login</a>
+</nav>
+
+<section class="hero">
+  <div class="eyebrow">Product designer & developer</div>
+  <h1>I build <span class="grad">interfaces</span> people actually enjoy using</h1>
+  <p>Freelance designer & developer helping startups turn ideas into polished, animated, production-ready products.</p>
+  <div class="hero-ctas">
+    <a href="#work" class="btn-primary">View my work</a>
+    <a href="#contact" class="btn-ghost">Get in touch</a>
+  </div>
+</section>
+
+<section id="work">
+  <div class="section-head">
+    <div class="eyebrow">Selected work</div>
+    <h2>Recent projects</h2>
+  </div>
+  <div class="projects">
+    <div class="project-card">
+      <div class="project-thumb"></div>
+      <h3>Finance dashboard</h3>
+      <p>Analytics platform for a fintech startup with real-time charts and reporting.</p>
+      <div class="tags"><span class="tag">React</span><span class="tag">Dashboard</span></div>
+    </div>
+    <div class="project-card">
+      <div class="project-thumb"></div>
+      <h3>E-commerce app</h3>
+      <p>Mobile-first shopping experience with smooth checkout animations.</p>
+      <div class="tags"><span class="tag">UI/UX</span><span class="tag">Mobile</span></div>
+    </div>
+    <div class="project-card">
+      <div class="project-thumb"></div>
+      <h3>SaaS landing page</h3>
+      <p>Conversion-focused marketing site with scroll-triggered animations.</p>
+      <div class="tags"><span class="tag">Marketing</span><span class="tag">Animation</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="section-head">
+    <div class="eyebrow">About me</div>
+    <h2>A bit about my work</h2>
+  </div>
+  <div class="about">
+    <p>I'm a designer-developer who enjoys turning rough ideas into clean, animated products. I work closely with clients from first sketch to final launch, keeping things simple to use and a little delightful along the way.</p>
+    <div class="stats">
+      <div class="stat"><h3>40+</h3><p>Projects shipped</p></div>
+      <div class="stat"><h3>5 yrs</h3><p>Experience</p></div>
+      <div class="stat"><h3>20+</h3><p>Happy clients</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="client-cta">
+    <h2>Already working with me?</h2>
+    <p>Log in to your client area to check project status and files.</p>
+    <a href="login.html" class="btn-primary">Go to client login</a>
+  </div>
+</section>
+
+<footer>
+  © 2026 designfolio. All rights reserved.
+</footer>
+
+</body>
+</html>
